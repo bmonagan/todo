@@ -4,10 +4,32 @@ const project_list = document.getElementById("project-list");
 const projects = [];
 
 function renderProject(project) {
+    const card = document.createElement("div");
+    card.className = "project-card";
 	const item = document.createElement("div");
 	item.className = "project-item";
 	item.textContent = `${project.name} ${project.priority} Todos: ${project.todoList.length}`;
-	project_list.append(item);
+    // View button
+    const button = document.createElement("button");
+    button.textContent = "View";
+    button.addEventListener("click", () => {
+        alert(`Project: ${project.name}\nPriority: ${project.priority}\nTodos: ${project.todoList.length}`);
+    });
+    item.appendChild(button);
+    // Delete button
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.addEventListener("click", () => {
+        const index = projects.indexOf(project);
+        if (index > -1) {
+            projects.splice(index, 1);
+            project_list.removeChild(card);
+        }
+    });
+    item.appendChild(deleteBtn);
+	card.appendChild(item);
+    project_list.appendChild(card);
+
 }
 
 
