@@ -4,7 +4,7 @@ const projects = [];
 
 function renderProject(project) {
   const item = document.createElement("div");
-  item.textContent = `${project.name} ${project.priority} ${project.todoList.length}`;
+  item.textContent = `${project.name} ${project.priority} Todos: ${project.todoList.length}`;
   project_list.append(item);
 }
 
