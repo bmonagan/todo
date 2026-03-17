@@ -60,7 +60,7 @@ modal.addEventListener('click', (e) => {
 // submit
 submitBtn.addEventListener('click', () => {
 	const name     = document.getElementById('name').value.trim();
-	const priority = Number(document.getElementById('priority').value);
+	const priority = document.getElementById('priority').value.trim();
 
 	if (!name || !priority) {
 		alert('Please fill out all fields');
