@@ -1,4 +1,5 @@
 import {Project} from "./project.js";
+import {Todo} from "./todo.js";
 import "./styles.css";
 const project_list = document.getElementById("project-list");
 const projects = [];
@@ -19,6 +20,12 @@ function createProjectCard(project, index) {
     viewBtn.dataset.action = "view";
     viewBtn.dataset.index = String(index);
     item.appendChild(viewBtn);
+
+    const addTodoBtn = document.createElement("button");
+    addTodoBtn.textContent = "Add Todo";
+    addTodoBtn.dataset.action = "add-todo";
+    addTodoBtn.dataset.index = String(index);
+    item.appendChild(addTodoBtn);
 
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete";
@@ -52,6 +59,18 @@ project_list.addEventListener("click", (event) => {
     const project = projects[index];
     if (action === "view") {
         alert(`Project: ${project.name}\nPriority: ${project.priority}\nTodos: ${project.todoList.length}`);
+        return;
+    }
+
+    if (action === "add-todo") {
+        const title = prompt("Todo title:");
+        if (!title || !title.trim()) {
+            return;
+        }
+
+        const todo = new Todo(title.trim(), "", "", "", "");
+        project.addTodo(todo);
+        renderProjects();
         return;
     }
 
