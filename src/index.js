@@ -58,7 +58,12 @@ project_list.addEventListener("click", (event) => {
 
     const project = projects[index];
     if (action === "view") {
-        alert(`Project: ${project.name}\nPriority: ${project.priority}\nTodos: ${project.todoList.length}`);
+        if (project.todoList.length === 0) {
+            alert("No todos in this project.");
+            return;
+        }
+        const todoLines = project.todoList.map((todo) => `- ${todo.title} (Priority: ${todo.priority})`);
+        alert(`Todos in ${project.name}:\n\n${todoLines.join("\n")}`);
         return;
     }
 
