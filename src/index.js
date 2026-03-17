@@ -68,7 +68,30 @@ project_list.addEventListener("click", (event) => {
             return;
         }
 
-        const todo = new Todo(title.trim(), "", "", "", "");
+        const descriptionInput = prompt("Description (optional):");
+        const dueDateInput = prompt("Due date (YYYY-MM-DD, optional):");
+        const priorityInput = prompt("Priority (low, medium, high):");
+        if (!priorityInput || !priorityInput.trim()) {
+            alert("Priority is required.");
+            return;
+        }
+
+        const normalizedPriority = priorityInput.trim().toLowerCase();
+        const validPriorities = ["low", "medium", "high"];
+        if (!validPriorities.includes(normalizedPriority)) {
+            alert("Priority must be low, medium, or high.");
+            return;
+        }
+
+        const notesInput = prompt("Notes (optional):");
+
+        const todo = new Todo(
+            title.trim(),
+            (descriptionInput || "").trim(),
+            (dueDateInput || "").trim(),
+            normalizedPriority,
+            (notesInput || "").trim()
+        );
         project.addTodo(todo);
         renderProjects();
         return;
