@@ -1,4 +1,4 @@
-class Project {
+export class Project {
     constructor(name, priority, todoList) {
         this.name = name;
         this.priority = priority;
