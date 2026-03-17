@@ -1,9 +1,11 @@
 import {Project} from "./project.js";
+import "./styles.css";
 const project_list = document.getElementById("project-list");
 const projects = [];
 
 function renderProject(project) {
   const item = document.createElement("div");
+  item.className = "project-item";
   item.textContent = `${project.name} ${project.priority} Todos: ${project.todoList.length}`;
   project_list.append(item);
 }
