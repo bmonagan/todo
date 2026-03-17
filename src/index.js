@@ -3,39 +3,68 @@ import "./styles.css";
 const project_list = document.getElementById("project-list");
 const projects = [];
 
-function renderProject(project) {
+function createProjectCard(project, index) {
     const card = document.createElement("div");
     card.className = "project-card";
-	const item = document.createElement("div");
-	item.className = "project-item";
-	item.textContent = `${project.name} ${project.priority} Todos: ${project.todoList.length}`;
-    // View button
-    const button = document.createElement("button");
-    button.textContent = "View";
-    button.addEventListener("click", () => {
-        alert(`Project: ${project.name}\nPriority: ${project.priority}\nTodos: ${project.todoList.length}`);
-    });
-    item.appendChild(button);
-    // Delete button
+
+    const item = document.createElement("div");
+    item.className = "project-item";
+
+    const summary = document.createElement("span");
+    summary.textContent = `${project.name} ${project.priority} Todos: ${project.todoList.length}`;
+    item.appendChild(summary);
+
+    const viewBtn = document.createElement("button");
+    viewBtn.textContent = "View";
+    viewBtn.dataset.action = "view";
+    viewBtn.dataset.index = String(index);
+    item.appendChild(viewBtn);
+
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete";
-    deleteBtn.addEventListener("click", () => {
-        const index = projects.indexOf(project);
-        if (index > -1) {
-            projects.splice(index, 1);
-            project_list.removeChild(card);
-        }
-    });
+    deleteBtn.dataset.action = "delete";
+    deleteBtn.dataset.index = String(index);
     item.appendChild(deleteBtn);
-	card.appendChild(item);
-    project_list.appendChild(card);
 
+    card.appendChild(item);
+    return card;
 }
+
+function renderProjects() {
+    project_list.textContent = "";
+    projects.forEach((project, index) => {
+        project_list.appendChild(createProjectCard(project, index));
+    });
+}
+
+project_list.addEventListener("click", (event) => {
+    const button = event.target.closest("button");
+    if (!button) {
+        return;
+    }
+
+    const index = Number(button.dataset.index);
+    const action = button.dataset.action;
+    if (!Number.isInteger(index) || index < 0 || index >= projects.length) {
+        return;
+    }
+
+    const project = projects[index];
+    if (action === "view") {
+        alert(`Project: ${project.name}\nPriority: ${project.priority}\nTodos: ${project.todoList.length}`);
+        return;
+    }
+
+    if (action === "delete") {
+        projects.splice(index, 1);
+        renderProjects();
+    }
+});
 
 
 const test = new Project("Test", "High", []);
 projects.push(test);
-renderProject(test);
+renderProjects();
 
 const modal     = document.getElementById('modal');
 const openBtn   = document.getElementById('newProjectBtn');
@@ -69,7 +98,7 @@ submitBtn.addEventListener('click', () => {
 
 	const project = new Project(name, priority);
 	projects.push(project);
-	renderProject(project);
+    renderProjects();
 	console.log('Created:', project);
 
 	modal.style.display = 'none';
